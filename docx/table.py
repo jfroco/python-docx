@@ -376,4 +376,4 @@ class _Rows(Parented):
         """
         Reference to the |Table| object this row collection belongs to.
         """
-        raise NotImplementedError
+        return self._parent._table

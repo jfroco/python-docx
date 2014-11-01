@@ -28,7 +28,6 @@ Feature: Access table rows, columns, and cells
       Then I can access the cell collection of the column
        And I can get the length of the column cell collection
 
-  @wip
   Scenario: Access cell collection of table row
      Given a table row having two cells
       Then I can access the cell collection of the row

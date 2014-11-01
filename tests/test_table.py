@@ -528,6 +528,10 @@ class Describe_Rows(object):
             too_high = row_count
             rows[too_high]
 
+    def it_provides_access_to_the_table_it_belongs_to(self, table_fixture):
+        rows, table_ = table_fixture
+        assert rows._table is table_
+
     # fixtures -------------------------------------------------------
 
     @pytest.fixture
@@ -536,6 +540,18 @@ class Describe_Rows(object):
         tbl = _tbl_bldr(rows=row_count, cols=2).element
         rows = _Rows(tbl, None)
         return rows, row_count
+
+    @pytest.fixture
+    def table_fixture(self, table_):
+        table_._table = table_
+        rows = _Rows(None, table_)
+        return rows, table_
+
+    # fixture components ---------------------------------------------
+
+    @pytest.fixture
+    def table_(self, request):
+        return instance_mock(request, Table)
 
 
 # fixtures -----------------------------------------------------------

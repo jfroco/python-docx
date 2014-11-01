@@ -4,7 +4,6 @@ Feature: Access table objects using its collections
   I need a set of table object collections
 
 
-  @wip
   Scenario Outline: Get collection length
     Given a 3x3 table containing <span-state>
      Then len(table.columns) is <cols>
