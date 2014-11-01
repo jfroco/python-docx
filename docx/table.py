@@ -88,6 +88,16 @@ class Table(Parented):
         self._tblPr.style = value
 
     @property
+    def _table(self):
+        """
+        Provide child objects with reference to the |Table| object they
+        belong to, without them having to know their direct parent is
+        a |Table| object. This is the terminus of a series of `parent._table`
+        calls from an arbitrary child through its ancestors.
+        """
+        return self
+
+    @property
     def _tblPr(self):
         return self._tbl.tblPr
 
