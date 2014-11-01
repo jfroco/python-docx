@@ -24,6 +24,18 @@ def given_a_2x2_table(context):
     context.table_ = Document().add_table(rows=2, cols=2)
 
 
+@given('a 3x3 table containing {span_state}')
+def given_a_3x3_table_containing_span_state(context, span_state):
+    table_idx = {
+        'only uniform cells': 0,
+        'a horizontal span':  1,
+        'a vertical span':    2,
+        'a combined span':    3,
+    }[span_state]
+    document = Document(test_docx('tbl-collections'))
+    context.table_ = document.tables[table_idx]
+
+
 @given('a column cell collection having two cells')
 def given_a_column_cell_collection_having_two_cells(context):
     docx_path = test_docx('blk-containing-table')
@@ -294,6 +306,38 @@ def then_can_iterate_over_row_collection(context):
         actual_count += 1
         assert isinstance(row, _Row)
     assert actual_count == 2
+
+
+@then('len(column.cells) is {rows_str} for each of its columns')
+def then_len_column_cells_is_rows_for_each_of_its_columns(context, rows_str):
+    table = context.table_
+    rows = int(rows_str)
+    assert len(table.columns) > 0
+    for column in table.columns:
+        assert len(column.cells) == rows, 'got %s' % len(column.cells)
+
+
+@then('len(row.cells) is {cols_str} for each of its rows')
+def then_len_row_cells_is_cols_for_each_of_its_rows(context, cols_str):
+    table = context.table_
+    cols = int(cols_str)
+    assert len(table.rows) > 0
+    for row in table.rows:
+        assert len(row.cells) == cols, 'got %s' % len(row.cells)
+
+
+@then('len(table.columns) is {cols_str}')
+def then_len_table_columns_is_cols(context, cols_str):
+    table = context.table_
+    cols = int(cols_str)
+    assert len(table.columns) == cols, 'got %s' % len(table.columns)
+
+
+@then('len(table.rows) is {rows_str}')
+def then_len_table_rows_is_rows(context, rows_str):
+    table = context.table_
+    rows = int(rows_str)
+    assert len(table.rows) == rows, 'got %s' % len(table.rows)
 
 
 @then('the length of the column collection is 2')
