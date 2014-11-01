@@ -293,7 +293,7 @@ class _Row(Parented):
         """
         Reference to the |Table| object this row belongs to.
         """
-        raise NotImplementedError
+        return self._parent._table
 
 
 class _RowCells(Parented):
@@ -360,3 +360,10 @@ class _Rows(Parented):
 
     def __len__(self):
         return len(self._tbl.tr_lst)
+
+    @property
+    def _table(self):
+        """
+        Reference to the |Table| object this row collection belongs to.
+        """
+        raise NotImplementedError

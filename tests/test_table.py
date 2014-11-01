@@ -417,6 +417,28 @@ class Describe_Row(object):
         cells = row.cells
         assert isinstance(cells, _RowCells)
 
+    def it_provides_access_to_the_table_it_belongs_to(self, table_fixture):
+        row, table_ = table_fixture
+        assert row._table is table_
+
+    # fixtures -------------------------------------------------------
+
+    @pytest.fixture
+    def table_fixture(self, rows_, table_):
+        rows_._table = table_
+        row = _Row(None, rows_)
+        return row, table_
+
+    # fixture components ---------------------------------------------
+
+    @pytest.fixture
+    def rows_(self, request):
+        return instance_mock(request, _Rows)
+
+    @pytest.fixture
+    def table_(self, request):
+        return instance_mock(request, Table)
+
 
 class Describe_RowCells(object):
 
