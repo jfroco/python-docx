@@ -17,6 +17,7 @@ from docx.text import Paragraph
 from .oxml.unitdata.table import a_gridCol, a_tbl, a_tblGrid, a_tc, a_tr
 from .oxml.unitdata.text import a_p
 from .unitutil.cxml import element, xml
+from .unitutil.mock import instance_mock
 
 
 class DescribeTable(object):
@@ -419,8 +420,8 @@ class Describe_Row(object):
 
 class Describe_RowCells(object):
 
-    def it_knows_how_many_cells_it_contains(self, cell_count_fixture):
-        cells, cell_count = cell_count_fixture
+    def it_knows_how_many_cells_it_contains(self, len_fixture):
+        cells, cell_count = len_fixture
         assert len(cells) == cell_count
 
     def it_can_iterate_over_its__Cell_instances(self, cell_count_fixture):
@@ -453,6 +454,18 @@ class Describe_RowCells(object):
         cells = _RowCells(element('w:tr/(w:tc, w:tc)'), None)
         cell_count = 2
         return cells, cell_count
+
+    @pytest.fixture
+    def len_fixture(self, row_):
+        cells = _RowCells(None, row_)
+        cell_count = row_._table.columns.__len__.return_value = 42
+        return cells, cell_count
+
+    # fixture components ---------------------------------------------
+
+    @pytest.fixture
+    def row_(self, request):
+        return instance_mock(request, _Row)
 
 
 class Describe_Rows(object):

@@ -288,6 +288,13 @@ class _Row(Parented):
         """
         return _RowCells(self._tr, self)
 
+    @property
+    def _table(self):
+        """
+        Reference to the |Table| object this row belongs to.
+        """
+        raise NotImplementedError
+
 
 class _RowCells(Parented):
     """
@@ -312,7 +319,20 @@ class _RowCells(Parented):
         return (_Cell(tc, self) for tc in self._tr.tc_lst)
 
     def __len__(self):
-        return len(self._tr.tc_lst)
+        """
+        The reported cell count for a row is based on the layout grid. The
+        count is always equal to the number of columns in the table, without
+        regard to the presence of horizontal spans.
+        """
+        return len(self._table.columns)
+
+    @property
+    def _table(self):
+        """
+        Reference to the |Table| object this collection of row cells belongs
+        to.
+        """
+        return self._parent._table
 
 
 class _Rows(Parented):
