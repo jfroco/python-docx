@@ -84,9 +84,10 @@ class Document(object):
         in the image file, defaulting to 72 dpi if no value is specified, as
         is often the case.
         """
-        run = self.add_paragraph().add_run()
+        p = self.add_paragraph()
+        run = p.add_run()
         picture = run.add_picture(image_path_or_stream, width, height)
-        return picture
+        return p
 
     def add_section(self, start_type=WD_SECTION.NEW_PAGE):
         """
